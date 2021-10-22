@@ -8,6 +8,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import 'leaflet-openweathermap'
 
+
+const city = require('./city.json')
 const snowIcon = require("@/assets/snow.png");
 const bullIcon = require("@/assets/bull.png");
 
@@ -142,6 +144,10 @@ export default {
       // eslint-disable-next-line new-cap
       L.control.layers({}, overlayMaps).addTo(this.map);
       this.map.setView([52.60311, 39.57076], 13);
+      L.polygon(city.coords, { 
+        color: 'white',
+        opacity: 0.1
+      }).addTo(this.map)
       this.makeRegions();
       this.makeLines();
       this.makeSnowplows();
