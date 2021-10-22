@@ -6,9 +6,10 @@ Block(v-bind="$attrs", @mounted="init")
 <script>
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import 'leaflet-openweathermap'
 
-const snowIcon = require('@/assets/snow.png')
-const bullIcon = require('@/assets/bull.png')
+const snowIcon = require("@/assets/snow.png");
+const bullIcon = require("@/assets/bull.png");
 
 export default {
   name: "Map",
@@ -86,47 +87,82 @@ export default {
   },
   methods: {
     init() {
-      this.map = L.map(this.$refs.map);
-
-      L.tileLayer(
+      const CartoDB_DarkMatter = L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
         {
           subdomains: "abcd",
           minZoom: 0,
           maxZoom: 20,
         }
-      ).addTo(this.map);
-      L.tileLayer(
+      );
+      const Stamen_TonerHybrid = L.tileLayer(
         "https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.{ext}",
         {
           subdomains: "abcd",
-          minZoom: 10,
+          minZoom: 13,
           maxZoom: 20,
           ext: "png",
           opacity: 0.5,
         }
-      ).addTo(this.map);
+      );
 
-      this.map.setView([54.3282, 48.3866], 13);
+      const apiKey = "a42629671608e1ce16b722c374588553";
+      const clouds = L.OWM.clouds({
+        showLegend: false,
+        opacity: 0.05,
+        appId: apiKey,
+      });
+      const precipitationcls = L.OWM.precipitationClassic({
+        showLegend: false,
+        appId: apiKey,
+        opacity: 0.8,
+      });
+      const snow = L.OWM.snow({
+        showLegend: false,
+        opacity: 0.8,
+        appId: apiKey,
+      });
+      const temp = L.OWM.temperature({ showLegend: false, appId: apiKey });
+
+      const overlayMaps = {
+        Облока: clouds,
+        Осадки: precipitationcls,
+        Снег: snow,
+        Температура: temp,
+        Дороги: Stamen_TonerHybrid,
+      };
+      this.map = L.map(this.$refs.map, {
+        layers: [
+          CartoDB_DarkMatter,
+          Stamen_TonerHybrid,
+          precipitationcls,
+          clouds,
+        ],
+      });
+      // eslint-disable-next-line new-cap
+      L.control.layers({}, overlayMaps).addTo(this.map);
+      this.map.setView([52.60311, 39.57076], 13);
       this.makeRegions();
       this.makeLines();
-      this.makeSnowplows()
+      this.makeSnowplows();
     },
     makeRegions() {
       this.regions.forEach((region) => {
         const icon = L.icon({
           iconUrl: snowIcon,
           iconAnchor: [17, 55],
-        })
+        });
         // eslint-disable-next-line new-cap
-        const marker = new L.marker(region.coords[0], { icon })
-        this.map.addLayer( marker );
+        const marker = new L.marker(region.coords[0], { icon });
+        this.map.addLayer(marker);
         this.polygones.push({
           name: region.name,
           color: region.color,
-          obj: L.polygon(region.coords, { color: region.color }).addTo(this.map).on('click', () => {
-            this.$emit('selectedRG', region.name)
-          }),
+          obj: L.polygon(region.coords, { color: region.color })
+            .addTo(this.map)
+            .on("click", () => {
+              this.$emit("selectedRG", region.name);
+            }),
         });
       });
     },
@@ -146,17 +182,19 @@ export default {
       const icon = L.icon({
         iconUrl: bullIcon,
         iconAnchor: [20, 55],
-      })
+      });
       this.snowplows.forEach((bull) => {
         this.snowbulls.push({
           ...bull,
           // eslint-disable-next-line new-cap
-          marker: new L.marker(bull.coords, { icon }).addTo(this.map).on('click', () => {
-            this.$emit('selectedSP', bull.name)
-          }),
+          marker: new L.marker(bull.coords, { icon })
+            .addTo(this.map)
+            .on("click", () => {
+              this.$emit("selectedSP", bull.name);
+            }),
         });
       });
-    }
+    },
   },
 };
 </script>
@@ -166,5 +204,29 @@ export default {
   background: var(--bg_0);
   width: 100%;
   height: 100%;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background: #1a1a1a !important;
+  border-bottom: none !important;
+  &:hover {
+    background: #3ea2ff !important;
+    color: white !important;
+  }
+}
+.leaflet-control-layers-separator {
+  border-top: none;
+}
+
+.leaflet-control {
+  border: none !important;
+  background: #1a1a1a;
+  a,
+  span {
+    font-family: Roboto Mono !important;
+    color: #ababab;
+    font-size: 12px !important;
+  }
 }
 </style>
