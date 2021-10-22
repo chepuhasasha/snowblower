@@ -23,11 +23,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    lines: {
-      type: Array,
-      default: () => [],
-    },
-    snowplows: {
+    cars: {
       type: Array,
       default: () => [],
     },
@@ -36,11 +32,7 @@ export default {
       default: null,
     },
     selectSP: {
-      type: String,
-      default: null,
-    },
-    selectLine: {
-      type: String,
+      type: Number,
       default: null,
     },
   },
@@ -49,15 +41,15 @@ export default {
       map: null,
       polygones: [],
       polylines: [],
-      snowbulls: [],
+      carsData: [],
     };
   },
   watch: {
     regions() {
       this.makeRegions();
     },
-    lines() {
-      this.makeLines();
+    cars() {
+      this.makeCars();
     },
     selectRG(val) {
       this.polygones.forEach((polygon) => {
@@ -70,22 +62,12 @@ export default {
       });
     },
     selectSP(val) {
-      this.snowbulls.forEach((bull) => {
-        if (bull.name === val) {
+      this.cars.forEach((bull) => {
+        if (bull.id === val) {
           this.map.setView(bull.coords, 18);
         }
       });
-    },
-    selectLine(val) {
-      this.polylines.forEach((line) => {
-        if (line.name === val) {
-          line.obj.setStyle({ color: "#3EA2FF" });
-          this.map.fitBounds(line.obj.getBounds());
-        } else {
-          line.obj.setStyle({ color: line.color });
-        }
-      });
-    },
+    }
   },
   methods: {
     init() {
@@ -149,8 +131,10 @@ export default {
         opacity: 0.1
       }).addTo(this.map)
       this.makeRegions();
-      this.makeLines();
-      this.makeSnowplows();
+      this.makeCars();
+      this.map.on('click', (e) => {
+        console.log(e.latlng)
+      })
     },
     makeRegions() {
       this.regions.forEach((region) => {
@@ -172,32 +156,22 @@ export default {
         });
       });
     },
-    makeLines() {
-      this.lines.forEach((line) => {
-        this.polylines.push({
-          name: line.name,
-          color: line.coords,
-          obj: L.polyline(line.coords, {
-            color: line.color,
-            weight: 6,
-          }).addTo(this.map),
-        });
-      });
-    },
-    makeSnowplows() {
+    makeCars() {
       const icon = L.icon({
         iconUrl: bullIcon,
         iconAnchor: [20, 55],
       });
-      this.snowplows.forEach((bull) => {
-        this.snowbulls.push({
-          ...bull,
+      this.cars.forEach((car) => {
+        this.carsData.push({
+          ...car,
           // eslint-disable-next-line new-cap
-          marker: new L.marker(bull.coords, { icon })
-            .addTo(this.map)
-            .on("click", () => {
-              this.$emit("selectedSP", bull.name);
-            }),
+          marker: new L.marker(car.coords, { icon }).addTo(this.map).on("click", () => {
+            this.$emit("selectedSP", car.id);
+          }),
+          line: L.polyline(car.way, {
+            color: '#3EA2FF',
+            weight: 6,
+          }).addTo(this.map)
         });
       });
     },
