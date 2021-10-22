@@ -1,12 +1,14 @@
 <template lang='pug'>
   Flex.dashboard(padding="20px", width="fill", height="fill")
-    h1 test
-    h1 test 2
+    Block(title="Участки", width="fill", height="fill")
 </template>
 
 <script>
 export default {
-  name: 'Home'
+  name: 'Home',
+  components: {
+    Block: () => import("@/components/templates/Block.vue"),
+  },
 }
 </script>
 <style lang='scss'>
