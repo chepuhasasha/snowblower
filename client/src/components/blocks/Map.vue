@@ -127,8 +127,8 @@ export default {
       L.control.layers({}, overlayMaps).addTo(this.map);
       this.map.setView([52.60311, 39.57076], 13);
       L.polygon(city.coords, { 
-        color: 'white',
-        opacity: 0.1
+        color: '#3EA2FF',
+        fill: false
       }).addTo(this.map)
       this.makeRegions();
       this.makeCars();
@@ -161,19 +161,29 @@ export default {
         iconUrl: bullIcon,
         iconAnchor: [20, 55],
       });
-      this.cars.forEach((car) => {
-        this.carsData.push({
-          ...car,
-          // eslint-disable-next-line new-cap
-          marker: new L.marker(car.coords, { icon }).addTo(this.map).on("click", () => {
-            this.$emit("selectedSP", car.id);
-          }),
-          line: L.polyline(car.way, {
-            color: '#3EA2FF',
-            weight: 6,
-          }).addTo(this.map)
+      if(!this.carsData[0]){
+        this.cars.forEach((car) => {
+          this.carsData.push({
+            ...car,
+            // eslint-disable-next-line new-cap
+            marker: new L.marker(car.coords, { icon }).addTo(this.map).on("click", () => {
+              this.$emit("selectedSP", car.id);
+            }),
+            line: L.polyline(car.way, {
+              color: '#3EA2FF',
+              weight: 6,
+            }).addTo(this.map)
+          });
         });
-      });
+      } else {
+        this.cars.forEach(car => {
+          this.carsData.forEach(lcar => {
+            if(lcar.id == car.id) {
+              lcar.marker.setLatLng(car.coords)
+            }
+          })
+        })
+      }
     },
   },
 };
@@ -204,7 +214,7 @@ export default {
   background: #1a1a1a;
   a,
   span {
-    font-family: Roboto Mono !important;
+    font-family: Ubuntu !important;
     color: #ababab;
     font-size: 12px !important;
   }
