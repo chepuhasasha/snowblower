@@ -161,19 +161,29 @@ export default {
         iconUrl: bullIcon,
         iconAnchor: [20, 55],
       });
-      this.cars.forEach((car) => {
-        this.carsData.push({
-          ...car,
-          // eslint-disable-next-line new-cap
-          marker: new L.marker(car.coords, { icon }).addTo(this.map).on("click", () => {
-            this.$emit("selectedSP", car.id);
-          }),
-          line: L.polyline(car.way, {
-            color: '#3EA2FF',
-            weight: 6,
-          }).addTo(this.map)
+      if(!this.carsData[0]){
+        this.cars.forEach((car) => {
+          this.carsData.push({
+            ...car,
+            // eslint-disable-next-line new-cap
+            marker: new L.marker(car.coords, { icon }).addTo(this.map).on("click", () => {
+              this.$emit("selectedSP", car.id);
+            }),
+            line: L.polyline(car.way, {
+              color: '#3EA2FF',
+              weight: 6,
+            }).addTo(this.map)
+          });
         });
-      });
+      } else {
+        this.cars.forEach(car => {
+          this.carsData.forEach(lcar => {
+            if(lcar.id == car.id) {
+              lcar.marker.setLatLng(car.coords)
+            }
+          })
+        })
+      }
     },
   },
 };
