@@ -1,5 +1,7 @@
 <template lang='pug'>
-  h1 test
+  Flex(col)
+    h1 test
+    h1 test 2
 </template>
 
 <script>
