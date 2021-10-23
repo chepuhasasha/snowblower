@@ -19,21 +19,56 @@ Flex.dashboard(padding="20px", width="fill", height="fill")
         @click='addPoly = !addPoly'
       )         
         Flex(
-          padding="10px 13px",
+          padding="0",
           width="fill",
           align-items="center",
           justify-content="center"
           @click='addPoly = !addPoly'
         ) 
-          input(placeholder='Точка А')
-          input(placeholder='Точка А')
+          input(placeholder='lat', type='number' v-model='polygone.a.lat')
+          input(placeholder='lng', type='number' v-model='polygone.a.lng')
+          button(@click='setPoint("a")')
+            icon(icon="crosshairs")
+        Flex(
+          padding="0",
+          width="fill",
+          align-items="center",
+          justify-content="center"
+          @click='addPoly = !addPoly'
+        ) 
+          input(placeholder='lat', type='number' v-model='polygone.b.lat')
+          input(placeholder='lng', type='number' v-model='polygone.b.lng')
+          button(@click='setPoint("b")')
+            icon(icon="crosshairs")
+        Flex(
+          padding="0",
+          width="fill",
+          align-items="center",
+          justify-content="center"
+          @click='addPoly = !addPoly'
+        ) 
+          input(placeholder='lat', type='number' v-model='polygone.c.lat')
+          input(placeholder='lng', type='number' v-model='polygone.c.lng')
+          button(@click='setPoint("c")')
+            icon(icon="crosshairs")
+        Flex(
+          padding="0",
+          width="fill",
+          align-items="center",
+          justify-content="center"
+          @click='addPoly = !addPoly'
+        ) 
+          input(placeholder='lng', type='number' v-model='polygone.d.lng')
+          input(placeholder='lat', type='number' v-model='polygone.d.lat')
+          button(@click='setPoint("d")')
+            icon(icon="crosshairs")
         Flex(
           tag="button",
           padding="10px 13px",
           width="fill",
           align-items="center",
           justify-content="center"
-          @click='addPoly = !addPoly'
+          @click='setPolygone'
         ) 
           | Создать
           icon(icon="plus")
@@ -69,6 +104,13 @@ export default {
       selectRG: null,
       selectSP: null,
       addPoly: false,
+      activePoint: null,
+      polygone: {
+        a: {lat: null, lgn: 0},
+        b: {lat: null, lgn: 0},
+        c: {lat: null, lgn: 0},
+        d: {lat: null, lgn: 0}
+      },
       cars: [],
     };
   },
@@ -116,9 +158,18 @@ export default {
       this.selectSP = id;
     },
     mapClick(e) {
-      if (this.addPoly) {
-        console.log(e.latlng);
+      if (this.activePoint) {
+        this.polygone[this.activePoint].lat = e.latlng.lat
+        this.polygone[this.activePoint].lng = e.latlng.lng
       }
+    },
+    setPolygone() {
+      console.log(this.polygone)
+    },
+    setPoint(name) {
+      this.activePoint = name
+
+      console.log(name)
     },
     getData() {
       axios

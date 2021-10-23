@@ -35,7 +35,7 @@ export default {
     selectSP: {
       type: Number,
       default: null,
-    },
+    }
   },
   data: () => {
     return {
