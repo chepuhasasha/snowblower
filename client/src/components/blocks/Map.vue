@@ -39,6 +39,10 @@ export default {
     polygone: {
       trpe: Object,
       default: null
+    },
+    lines: {
+      type: Array,
+      default: () => []
     }
   },
   data: () => {
@@ -95,6 +99,15 @@ export default {
     "polygone.d.lat": function(val){
       console.log(val)
       this.makePolygon()
+    },
+    lines(val) {
+      val.forEach(item => {
+        L.polyline(item, {
+          color: '#3EA2FF',
+          opacity: 0.5,
+          weight: 6,
+        }).addTo(this.map)
+      })
     }
   },
   methods: {
@@ -160,7 +173,7 @@ export default {
         fill: false
       }).addTo(this.map)
       this.makeGarage()
-      this.makePoints()
+      // this.makePoints()
       this.makeRegions();
       this.makeCars();
       this.map.on('click', (e) => {
