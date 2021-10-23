@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap');
 
-h1 {
+* {
   font-family: Ubuntu;
+}
+h1 {
   font-style: normal;
   font-weight: 300;
   font-size: 48px;
@@ -10,7 +12,6 @@ h1 {
   color: #FFFFFF;
 }
 h2 {
-  font-family: Ubuntu;
   font-style: normal;
   font-weight: 300;
   font-size: 20px;
@@ -20,7 +21,6 @@ h2 {
   text-transform: uppercase;
 }
 h3 {
-  font-family: Ubuntu;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -33,7 +33,6 @@ h3 {
   color: #ABABAB;
 }
 h4 {
-  font-family: Ubuntu;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
