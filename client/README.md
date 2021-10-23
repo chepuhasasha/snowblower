@@ -1,5 +1,8 @@
 # client
 
+
+install [Node.js](https://nodejs.org/en/)
+
 ## Project setup
 ```
 npm install
