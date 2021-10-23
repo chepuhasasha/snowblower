@@ -1,7 +1,7 @@
 <template lang='pug'>
 Flex.dashboard(padding="20px", width="fill", height="fill")
   Flex(col, padding="0", :fixWidth="300", height="fill")
-    Temp(temp="-16", city="Липитск")
+    Temp(temp="-16", city="Липицк")
     Block(title="Участки", width="fill", height="fill")
       Region(
         v-for="(region, i) in getRegions",
