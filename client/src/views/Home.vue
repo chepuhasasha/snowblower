@@ -187,7 +187,7 @@ export default {
       axios.get("http://178.154.229.18:8000/api/venicle").then((res) => {
         this.cars = res.data;
       });
-      axios.get("https://api.openweathermap.org/data/2.5/weather?q=London&appid=e08f8129f4a0dc9d6ff18b259c5ff81c").then((res) => {
+      axios.get("https://api.openweathermap.org/data/2.5/weather?q=Lipetsk&appid=e08f8129f4a0dc9d6ff18b259c5ff81c").then((res) => {
         this.wather = Math.round(res.data.main.temp -273)
         console.log(this.wather)
       });
