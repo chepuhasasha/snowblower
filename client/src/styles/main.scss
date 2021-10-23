@@ -9,3 +9,16 @@
   --primary_0: #3EA2FF;
   --primary_100: rgba(62, 162, 255, 0.28);
 }
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  background: var(--bg_200);
+  color: white;
+  text-transform: uppercase;
+  &:hover {
+    background: var(--primary_0);
+  }
+}

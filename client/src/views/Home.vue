@@ -10,6 +10,9 @@ Flex.dashboard(padding="20px", width="fill", height="fill")
         :active="selectRG === region.name",
         @click="selectedRG(region.name)"
       )
+      Flex(tag='button' padding='10px 13px' width="fill" align-items='center' justify-content='center') 
+        | Создать
+        icon(icon='plus')
     Block(title="Техника", width="fill", height="fill")
       Snowplow(
         v-for="(car, i) in getCars",
