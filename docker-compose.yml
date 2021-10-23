@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  front:
+    build:
+      context: .
+      dockerfile: front.dockerfile
+    container_name: front
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "80:8080"
+
+  db:
+    image: "postgis/postgis:latest"
+    #restart: "always"
+    container_name: "postgis"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=gis
+    volumes:
+      - "./data:/var/lib/postgresql/data"
+
+  adminer:
+    image: "adminer"
+    container_name: adminer
+    #restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  api:
+    build:
+      context: .
+      dockerfile: api.dockerfile
+    container_name: "api"
+    #restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
