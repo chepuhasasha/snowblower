@@ -79,6 +79,10 @@ export default {
         return ["start", "center", "end"].includes(value);
       },
     },
+    overflow: {
+      type: String,
+      default: null
+    }
   },
   computed: {
     getStyle() {
@@ -97,6 +101,7 @@ export default {
         justifySelf: this.justifySelf,
         alignItems: this.alignItems,
         alignSelf: this.alignSelf,
+        overflow: this.overflow ? this.overflow : 'none'
       };
     },
   },

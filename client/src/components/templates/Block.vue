@@ -4,7 +4,7 @@
       h3.block_title {{ title }}
       Flex(padding='0')
         slot(name='tools')
-    Flex(col :gap='5' width='fill' height='fill' @mounted='$emit("mounted")')
+    Flex.block_body(col :gap='5' width='fill' height='fill' @mounted='$emit("mounted")')
       slot
 </template>
 
@@ -26,6 +26,10 @@ export default {
   border: 1px solid var(--bg_200);
   &_header {
     background: var(--bg_100);
+  }
+  &_body {
+    height: 100%;
+    overflow: auto;
   }
 }
 </style>

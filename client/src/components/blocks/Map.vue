@@ -36,18 +36,23 @@ export default {
       type: Number,
       default: null,
     },
+    polygone: {
+      trpe: Object,
+      default: null
+    }
   },
   data: () => {
     return {
       map: null,
+      region: null,
       polygones: [],
       polylines: [],
       carsData: [],
       garage: [
-        [52.6389125, 39.53994646],
-        [52.6055795,39.52249936],
-        [52.60469729740339, 38.48343237969811],
-        [52.60272342632745, 38.48057850930626]
+        [52.61907391770899, 39.522621567470935],
+        [52.61915208081608, 39.53154983340855],
+        [52.61568671567549, 39.53163568211949],
+        [52.61563460282798, 39.52266449182641],
       ]
     };
   },
@@ -71,9 +76,25 @@ export default {
     selectSP(val) {
       this.cars.forEach((bull) => {
         if (bull.id === val) {
-          this.map.setView(bull.coords, 18);
+          this.map.setView(bull.coord, 18);
         }
       });
+    },
+    "polygone.a.lat": function(val){
+      console.log(val)
+      this.makePolygon()
+    },
+    "polygone.b.lat": function(val){
+      console.log(val)
+      this.makePolygon()
+    },
+    "polygone.c.lat": function(val){
+      console.log(val)
+      this.makePolygon()
+    },
+    "polygone.d.lat": function(val){
+      console.log(val)
+      this.makePolygon()
     }
   },
   methods: {
@@ -130,6 +151,7 @@ export default {
           clouds,
         ],
       });
+      this.region = L.polygon([], { color: 'red' }).addTo(this.map)
       // eslint-disable-next-line new-cap
       L.control.layers({}, overlayMaps).addTo(this.map);
       this.map.setView([52.60311, 39.57076], 13);
@@ -142,7 +164,7 @@ export default {
       this.makeRegions();
       this.makeCars();
       this.map.on('click', (e) => {
-        console.log(e.latlng)
+         this.$emit('click', e)
       })
     },
     makeGarage() {
@@ -178,20 +200,20 @@ export default {
           this.carsData.push({
             ...car,
             // eslint-disable-next-line new-cap
-            marker: new L.marker(car.coords, { icon }).addTo(this.map).on("click", () => {
+            marker: new L.marker(car.coord, { icon }).addTo(this.map).on("click", () => {
               this.$emit("selectedSP", car.id);
             }),
-            line: L.polyline(car.way, {
+            line: car.way ? L.polyline(car.way, {
               color: '#3EA2FF',
               weight: 6,
-            }).addTo(this.map)
+            }).addTo(this.map) : null
           });
         });
       } else {
         this.cars.forEach(car => {
           this.carsData.forEach(lcar => {
             if(lcar.id == car.id) {
-              lcar.marker.setLatLng(car.coords)
+              lcar.marker.setLatLng(car.coord)
             }
           })
         })
@@ -200,8 +222,28 @@ export default {
     makePoints() {
       L.polyline(points, {
               color: '#3EA2FF',
+              opacity: 0.5,
               weight: 6,
             }).addTo(this.map)
+    },
+    makePolygon() {
+      const coords = []
+      if(this.polygone) {
+        if(this.polygone.a.lat) {
+          coords.push([this.polygone.a.lat, this.polygone.a.lng])
+        }
+        if(this.polygone.b.lat) {
+          coords.push([this.polygone.b.lat, this.polygone.b.lng])
+        }
+        if(this.polygone.c.lat) {
+          coords.push([this.polygone.c.lat, this.polygone.c.lng])
+        }
+        if(this.polygone.d.lat) {
+          coords.push([this.polygone.d.lat, this.polygone.d.lng])
+        }
+      }
+      this.region.setLatLngs(coords)
+      
     }
   },
 };
