@@ -10,6 +10,7 @@ import 'leaflet-openweathermap'
 
 
 const city = require('./city.json')
+const points = require('./points.json')
 const snowIcon = require("@/assets/snow.png");
 const bullIcon = require("@/assets/bull.png");
 
@@ -42,6 +43,12 @@ export default {
       polygones: [],
       polylines: [],
       carsData: [],
+      garage: [
+        [52.6389125, 39.53994646],
+        [52.6055795,39.52249936],
+        [52.60469729740339, 38.48343237969811],
+        [52.60272342632745, 38.48057850930626]
+      ]
     };
   },
   watch: {
@@ -130,11 +137,16 @@ export default {
         color: '#3EA2FF',
         fill: false
       }).addTo(this.map)
+      this.makeGarage()
+      this.makePoints()
       this.makeRegions();
       this.makeCars();
       this.map.on('click', (e) => {
         console.log(e.latlng)
       })
+    },
+    makeGarage() {
+      L.polygon(this.garage, { color: 'red' }).addTo(this.map)
     },
     makeRegions() {
       this.regions.forEach((region) => {
@@ -185,6 +197,12 @@ export default {
         })
       }
     },
+    makePoints() {
+      L.polyline(points, {
+              color: '#3EA2FF',
+              weight: 6,
+            }).addTo(this.map)
+    }
   },
 };
 </script>
