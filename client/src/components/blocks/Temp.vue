@@ -5,7 +5,7 @@
       h2 {{ city }}
     Flex(padding='0' align-items='center' :gap='10')
       h1 {{ temp }}°C
-      icon.temp_icon__big(icon='snowflake')
+      //- icon.temp_icon__big(icon='snowflake')
 </template>
 
 <script>
@@ -13,8 +13,8 @@ export default {
   name: 'Temp',
   props: {
     temp: {
-      type: String,
-      default: '0'
+      type: Number,
+      default: null
     },
     city: {
       type: String,

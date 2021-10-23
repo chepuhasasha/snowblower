@@ -160,7 +160,7 @@ export default {
         fill: false
       }).addTo(this.map)
       this.makeGarage()
-      // this.makePoints()
+      this.makePoints()
       this.makeRegions();
       this.makeCars();
       this.map.on('click', (e) => {
@@ -222,6 +222,7 @@ export default {
     makePoints() {
       L.polyline(points, {
               color: '#3EA2FF',
+              opacity: 0.5,
               weight: 6,
             }).addTo(this.map)
     },

@@ -1,7 +1,7 @@
 <template lang='pug'>
 Flex.dashboard(padding="20px", width="fill", height="fill")
   Flex(col, padding="0", :fixWidth="300", height="fill")
-    Temp(temp="-16", city="Липицк")
+    Temp(:temp="wather", city="Липицк")
     Block(title="Участок", width="fill", height="fill")
       Region(
         v-for="(region, i) in getRegions",
@@ -116,6 +116,7 @@ export default {
       selectSP: null,
       addPoly: false,
       activePoint: null,
+      wather: 0,
       polygone: {
         a: { lat: null, lng: null },
         b: { lat: null, lng: null },
@@ -186,12 +187,18 @@ export default {
       axios.get("http://178.154.229.18:8000/api/venicle").then((res) => {
         this.cars = res.data;
       });
+      axios.get("https://api.openweathermap.org/data/2.5/weather?q=London&appid=e08f8129f4a0dc9d6ff18b259c5ff81c").then((res) => {
+        this.wather = Math.round(res.data.main.temp -273)
+        console.log(this.wather)
+      });
+
     },
   },
   mounted() {
+    this.getData();
     setInterval(() => {
       this.getData();
-    }, 1000);
+    }, 10000);
   },
 };
 </script>
