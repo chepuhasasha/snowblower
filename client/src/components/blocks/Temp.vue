@@ -13,8 +13,8 @@ export default {
   name: 'Temp',
   props: {
     temp: {
-      type: String,
-      default: '0'
+      type: Number,
+      default: null
     },
     city: {
       type: String,
