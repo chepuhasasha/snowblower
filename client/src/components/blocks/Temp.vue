@@ -5,7 +5,7 @@
       h2 {{ city }}
     Flex(padding='0' align-items='center' :gap='10')
       h1 {{ temp }}°C
-      icon.temp_icon__big(icon='snowflake')
+      //- icon.temp_icon__big(icon='snowflake')
 </template>
 
 <script>
