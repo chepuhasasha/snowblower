@@ -57,3 +57,15 @@ textarea,
 select {
   font: inherit;
 }
+
+*::-webkit-scrollbar {
+  background-color: var(--bg_0);
+  height: 10px;
+  width: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--bg_200);
+}
+*::-webkit-scrollbar-corner {
+  background: none;
+}

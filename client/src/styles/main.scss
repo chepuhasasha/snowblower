@@ -23,7 +23,7 @@ button {
     background: var(--primary_0);
   }
 }
-input {
+input[type=number] {
   width: 100%;
   padding: 10px;
   outline: none;

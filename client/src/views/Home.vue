@@ -11,67 +11,77 @@ Flex.dashboard(padding="20px", width="fill", height="fill")
         @click="selectedRG(region.name)"
       )
       Flex(
-        col
+        col,
         padding="0",
         width="fill",
         align-items="center",
-        justify-content="center"
-        @click='addPoly = !addPoly'
-      )         
+        justify-content="center",
+        @click="addPoly = !addPoly"
+      ) 
         Flex(
           padding="0",
           width="fill",
           align-items="center",
-          justify-content="center"
-          @click='addPoly = !addPoly'
+          justify-content="center",
+          @click="addPoly = !addPoly"
         ) 
-          input(placeholder='lat', type='number' v-model='polygone.a.lat')
-          input(placeholder='lng', type='number' v-model='polygone.a.lng')
-          button(@click='setPoint("a")')
+          input(placeholder="lat", type="number", v-model="polygone.a.lat")
+          input(placeholder="lng", type="number", v-model="polygone.a.lng")
+          button(
+            @click="setPoint('a')",
+            :class="{ active: activePoint === 'a' }"
+          )
             icon(icon="crosshairs")
         Flex(
           padding="0",
           width="fill",
           align-items="center",
-          justify-content="center"
-          @click='addPoly = !addPoly'
+          justify-content="center",
+          @click="addPoly = !addPoly"
         ) 
-          input(placeholder='lat', type='number' v-model='polygone.b.lat')
-          input(placeholder='lng', type='number' v-model='polygone.b.lng')
-          button(@click='setPoint("b")')
+          input(placeholder="lat", type="number", v-model="polygone.b.lat")
+          input(placeholder="lng", type="number", v-model="polygone.b.lng")
+          button(
+            @click="setPoint('b')",
+            :class="{ active: activePoint === 'b' }"
+          )
             icon(icon="crosshairs")
         Flex(
           padding="0",
           width="fill",
           align-items="center",
-          justify-content="center"
-          @click='addPoly = !addPoly'
+          justify-content="center",
+          @click="addPoly = !addPoly"
         ) 
-          input(placeholder='lat', type='number' v-model='polygone.c.lat')
-          input(placeholder='lng', type='number' v-model='polygone.c.lng')
-          button(@click='setPoint("c")')
+          input(placeholder="lat", type="number", v-model="polygone.c.lat")
+          input(placeholder="lng", type="number", v-model="polygone.c.lng")
+          button(
+            @click="setPoint('c')",
+            :class="{ active: activePoint === 'c' }"
+          )
             icon(icon="crosshairs")
         Flex(
           padding="0",
           width="fill",
           align-items="center",
-          justify-content="center"
-          @click='addPoly = !addPoly'
+          justify-content="center",
+          @click="addPoly = !addPoly"
         ) 
-          input(placeholder='lng', type='number' v-model='polygone.d.lng')
-          input(placeholder='lat', type='number' v-model='polygone.d.lat')
-          button(@click='setPoint("d")')
+          input(placeholder="lng", type="number", v-model="polygone.d.lng")
+          input(placeholder="lat", type="number", v-model="polygone.d.lat")
+          button(
+            @click="setPoint('d')",
+            :class="{ active: activePoint === 'd' }"
+          )
             icon(icon="crosshairs")
         Flex(
           tag="button",
           padding="10px 13px",
           width="fill",
           align-items="center",
-          justify-content="center"
-          @click='setPolygone'
-        ) 
-          | Создать
-          icon(icon="plus")
+          justify-content="center",
+          @click="setPolygone"
+        ) Рассчитать маршруты
   Map(
     title="Карта",
     width="fill",
@@ -81,6 +91,7 @@ Flex.dashboard(padding="20px", width="fill", height="fill")
     :cars="getCars",
     :selectRG="selectRG",
     :selectSP="selectSP",
+    :polygone="this.polygone",
     @selectedRG="selectedRG($event)",
     @selectedSP="selectedSP($event)"
   )
@@ -106,10 +117,10 @@ export default {
       addPoly: false,
       activePoint: null,
       polygone: {
-        a: {lat: null, lgn: 0},
-        b: {lat: null, lgn: 0},
-        c: {lat: null, lgn: 0},
-        d: {lat: null, lgn: 0}
+        a: { lat: null, lng: null },
+        b: { lat: null, lng: null },
+        c: { lat: null, lng: null },
+        d: { lat: null, lng: null },
       },
       cars: [],
     };
@@ -159,38 +170,22 @@ export default {
     },
     mapClick(e) {
       if (this.activePoint) {
-        this.polygone[this.activePoint].lat = e.latlng.lat
-        this.polygone[this.activePoint].lng = e.latlng.lng
+        this.polygone[this.activePoint].lat = e.latlng.lat;
+        this.polygone[this.activePoint].lng = e.latlng.lng;
       }
     },
     setPolygone() {
-      console.log(this.polygone)
+      console.log('расчитать запрос');
     },
     setPoint(name) {
-      this.activePoint = name
+      this.activePoint = name;
 
-      console.log(name)
+      console.log(name);
     },
     getData() {
-      axios
-        .get("https://api.coindesk.com/v1/bpi/currentprice.json")
-        .then(() => {
-          this.cars = [
-            {
-              id: 1,
-              name: "Бульдозер максим",
-              number: "АУ777Е",
-              status: "В работе",
-              coords: [52.60283902179348, 39.5168277094808],
-              way: [
-                [52.594706282077965, 39.50395579982881],
-                [52.609198189273584, 39.5296996191328],
-                [52.605758098557764, 39.53278887744928],
-                [52.60409007851464, 39.53793764131006],
-              ],
-            },
-          ];
-        });
+      axios.get("http://178.154.229.18:8000/api/venicle").then((res) => {
+        this.cars = res.data;
+      });
     },
   },
   mounted() {
@@ -204,5 +199,8 @@ export default {
 <style lang='scss'>
 .dashboard {
   background: var(--bg_0);
+}
+.active {
+  background: var(--primary_0);
 }
 </style>

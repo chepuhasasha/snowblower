@@ -2,7 +2,7 @@
   Element.snowplow(v-bind='$attrs' @click='onClick')
     Flex(col :gap='0' padding='0')
       h4 {{ snowplow.name }}
-      span.snowplow_status {{ snowplow.status }}
+      span.snowplow_status {{ snowplow.number }}
 </template>
 
 <script>
