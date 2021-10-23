@@ -142,7 +142,7 @@ export default {
       this.makeRegions();
       this.makeCars();
       this.map.on('click', (e) => {
-        console.log(e.latlng)
+         this.$emit('click', e)
       })
     },
     makeGarage() {

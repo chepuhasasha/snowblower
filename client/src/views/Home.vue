@@ -2,7 +2,7 @@
 Flex.dashboard(padding="20px", width="fill", height="fill")
   Flex(col, padding="0", :fixWidth="300", height="fill")
     Temp(temp="-16", city="Липицк")
-    Block(title="Участки", width="fill", height="fill")
+    Block(title="Участок", width="fill", height="fill")
       Region(
         v-for="(region, i) in getRegions",
         :region="region",
@@ -10,22 +10,38 @@ Flex.dashboard(padding="20px", width="fill", height="fill")
         :active="selectRG === region.name",
         @click="selectedRG(region.name)"
       )
-      Flex(tag='button' padding='10px 13px' width="fill" align-items='center' justify-content='center') 
-        | Создать
-        icon(icon='plus')
-    Block(title="Техника", width="fill", height="fill")
-      Snowplow(
-        v-for="(car, i) in getCars",
-        :snowplow="car",
-        :key="i",
-        :active="selectSP === car.id",
-        @click="selectedSP(car.id)"
-      )
-    Block(title="Настройки", width="fill")
+      Flex(
+        col
+        padding="0",
+        width="fill",
+        align-items="center",
+        justify-content="center"
+        @click='addPoly = !addPoly'
+      )         
+        Flex(
+          padding="10px 13px",
+          width="fill",
+          align-items="center",
+          justify-content="center"
+          @click='addPoly = !addPoly'
+        ) 
+          input(placeholder='Точка А')
+          input(placeholder='Точка А')
+        Flex(
+          tag="button",
+          padding="10px 13px",
+          width="fill",
+          align-items="center",
+          justify-content="center"
+          @click='addPoly = !addPoly'
+        ) 
+          | Создать
+          icon(icon="plus")
   Map(
     title="Карта",
     width="fill",
     height="fill",
+    @click="mapClick",
     :regions="getRegions",
     :cars="getCars",
     :selectRG="selectRG",
@@ -33,6 +49,14 @@ Flex.dashboard(padding="20px", width="fill", height="fill")
     @selectedRG="selectedRG($event)",
     @selectedSP="selectedSP($event)"
   )
+  Block(title="Техника", :fixWidth="300", height="fill")
+    Snowplow(
+      v-for="(car, i) in getCars",
+      :snowplow="car",
+      :key="i",
+      :active="selectSP === car.id",
+      @click="selectedSP(car.id)"
+    )
 </template>
 
 <script>
@@ -44,7 +68,8 @@ export default {
     return {
       selectRG: null,
       selectSP: null,
-      cars: []
+      addPoly: false,
+      cars: [],
     };
   },
   components: {
@@ -90,6 +115,11 @@ export default {
       }
       this.selectSP = id;
     },
+    mapClick(e) {
+      if (this.addPoly) {
+        console.log(e.latlng);
+      }
+    },
     getData() {
       axios
         .get("https://api.coindesk.com/v1/bpi/currentprice.json")
@@ -113,9 +143,9 @@ export default {
     },
   },
   mounted() {
-    setInterval(()=> {
+    setInterval(() => {
       this.getData();
-    },1000)
+    }, 1000);
   },
 };
 </script>
