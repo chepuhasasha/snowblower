@@ -1,7 +1,7 @@
 <template lang='pug'>
 Flex.dashboard(padding="20px", width="fill", height="fill")
   Flex(col, padding="0", :fixWidth="300", height="fill")
-    Temp(:temp="wather", city="Липицк")
+    Temp(:temp="wather", city="Липецк")
     Block(title="Участок", width="fill", height="fill")
       Region(
         v-for="(region, i) in getRegions",
@@ -89,6 +89,7 @@ Flex.dashboard(padding="20px", width="fill", height="fill")
     @click="mapClick",
     :regions="getRegions",
     :cars="getCars",
+    :lines='lines'
     :selectRG="selectRG",
     :selectSP="selectSP",
     :polygone="this.polygone",
@@ -116,6 +117,7 @@ export default {
       selectSP: null,
       addPoly: false,
       activePoint: null,
+      lines: null,
       wather: 0,
       polygone: {
         a: { lat: null, lng: null },
@@ -184,12 +186,41 @@ export default {
       console.log(name);
     },
     getData() {
+      const left = "39.501" 
+      const bottom = "52.5761" 
+      const right = "39.5188" 
+      const top = "52.5856" 
       axios.get("http://178.154.229.18:8000/api/venicle").then((res) => {
         this.cars = res.data;
       });
-      axios.get("https://api.openweathermap.org/data/2.5/weather?q=London&appid=e08f8129f4a0dc9d6ff18b259c5ff81c").then((res) => {
+      axios.get("https://api.openweathermap.org/data/2.5/weather?q=Lipetsk&appid=e08f8129f4a0dc9d6ff18b259c5ff81c").then((res) => {
         this.wather = Math.round(res.data.main.temp -273)
         console.log(this.wather)
+      });
+      axios.get(`https://api.openstreetmap.org/api/0.6/map?bbox=${left},${bottom},${right},${top}`, {
+        auth: {
+          username: 'bol642@yandex.ru',
+          password: 'Qwerty12!'
+        }
+      }).then((res) => {
+        const elements = res.data.elements
+        const nodes = elements.filter(node => node.type === 'node')
+        const ways = elements.filter(node => node.type === 'way')
+        const result = []
+        ways.forEach(item => {
+          let way = []
+
+          nodes.forEach(node => {
+            if(item.nodes.includes(node.id)) {
+              // ['primary', 'secondary', 'residential', 'tertiary'].includes(nodes.tags.highway)
+              way.push([node.lat, node.lon])
+              console.log(node.tags)
+            }
+          })
+          result.push(way)
+        });
+        this.lines = result
+        console.log(result)
       });
 
     },
@@ -198,7 +229,7 @@ export default {
     this.getData();
     setInterval(() => {
       this.getData();
-    }, 10000);
+    }, 10000 * 10);
   },
 };
 </script>
