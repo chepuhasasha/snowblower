@@ -1,4 +1,7 @@
+# coding: utf-8
+from datetime import datetime
 
+# from sqlalchemy.orm import backref
 from src import db
 from sqlalchemy.dialects import postgresql
 
@@ -17,14 +20,40 @@ from sqlalchemy.dialects import postgresql
 # # }
 
 
-class Venicle(db.Model):
+class Base:
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+
+class Venicle(db.Model, Base):
     __tablename__ = 'venicle'
 
-    id = db.Column(db.Integer, primary_key=True, index=True)
+    id = db.Column(db.Integer, primary_key=True,
+                   index=True, autoincrement=True)
     name = db.Column(db.String(20), unique=True, index=True, nullable=False)
     number = db.Column(db.String(10), nullable=False)
     coord = db.Column(postgresql.ARRAY(db.Float))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class Task(db.Model, Base):
+    __tablename__ = 'task'
+
+    id = db.Column(db.Integer, primary_key=True,
+                   index=True, autoincrement=True)
+    datetime = db.Column(db.DateTime, default=datetime.utcnow)
+    distance = db.Column(db.Integer, default=0)
+    venicle_id = db.Column(db.Integer, db.ForeignKey('venicle.id'))
+    routes = db.relationship('Route', backref='task', lazy=True)
+
+
+class Route(db.Model, Base):
+    __tablename__ = 'route'
+
+    id = db.Column(db.Integer, primary_key=True,
+                   index=True, autoincrement=True)
+    coord = db.Column(postgresql.ARRAY(db.Float))
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'),
+                        nullable=False)
