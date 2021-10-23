@@ -4,6 +4,7 @@ click==8.0.3
 colorama==0.4.4
 fake-useragent==0.1.11
 Flask==2.0.2
+Flask-Cors==3.0.10
 Flask-SQLAlchemy==2.5.1
 GeoAlchemy2==0.9.4
 greenlet==1.1.2
@@ -15,6 +16,7 @@ packaging==21.0
 psycopg2==2.9.1
 pyparsing==2.4.7
 requests==2.26.0
+six==1.16.0
 SQLAlchemy==1.4.26
 urllib3==1.26.7
 Werkzeug==2.0.2
