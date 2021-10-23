@@ -27,7 +27,6 @@ def get_tasks():
         json_task = task.as_dict()
         json_task['routes'] = []
         for route in task.routes:
-            print(route)
             json_task['routes'].append(route.as_dict())
 
         result.append(json_task)
