@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
-from src import create_app
-# from app.models import Venicle
+from src import create_app, db
 
 app = create_app()
 
 
-# @app.shell_context_processor
-# def make_shell_context():
-#     return {'db': db}
+@app.shell_context_processor
+def make_shell_context():
+    return {'db': db}
 
 
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 
 from src import db
+from sqlalchemy.dialects import postgresql
 from geoalchemy2 import Geometry
 
 # # {
@@ -24,7 +25,7 @@ class Venicle(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String(20), unique=True, index=True, nullable=False)
     number = db.Column(db.String(10), nullable=False)
-    coord = db.Column(Geometry('POINT'))
+    coord = db.Column(postgresql.ARRAY(db.Float))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
