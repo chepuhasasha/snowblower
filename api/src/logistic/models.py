@@ -1,7 +1,6 @@
 
 from src import db
 from sqlalchemy.dialects import postgresql
-from geoalchemy2 import Geometry
 
 # # {
 # #     "id": 1,
