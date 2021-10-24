@@ -190,7 +190,7 @@ export default {
       const bottom = "52.5761" 
       const right = "39.5188" 
       const top = "52.5856" 
-      axios.get("http://178.154.229.18:8000/api/venicle").then((res) => {
+      axios.get("http://84.252.130.189:8000/api/venicle").then((res) => {
         this.cars = res.data;
       });
       axios.get("https://api.openweathermap.org/data/2.5/weather?q=Lipetsk&appid=e08f8129f4a0dc9d6ff18b259c5ff81c").then((res) => {
