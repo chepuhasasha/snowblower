@@ -5,6 +5,6 @@
 
 Тем немение проект является одним из победителей хакатона...
 
-*Frontend:  [@sashachepuha](https://github.com/sashachepuha)
-*Backend: [@davidchak](https://github.com/davidchak)
-*Расчет маршрутов: [@Crash642](https://github.com/Crash642)
+- Frontend:  [@sashachepuha](https://github.com/sashachepuha)
+- Backend: [@davidchak](https://github.com/davidchak)
+- Расчет маршрутов: [@Crash642](https://github.com/Crash642)
