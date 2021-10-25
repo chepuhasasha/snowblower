@@ -8,3 +8,4 @@
 - Frontend:  [@sashachepuha](https://github.com/sashachepuha)
 - Backend: [@davidchak](https://github.com/davidchak)
 - Расчет маршрутов: [@Crash642](https://github.com/Crash642)
+- Управление проектом: [@Oalexyz](https://github.com/Oalexyz)
