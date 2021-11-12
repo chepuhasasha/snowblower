@@ -3,7 +3,7 @@ from datetime import datetime
 
 # from sqlalchemy.orm import backref
 from src import db
-from sqlalchemy.dialects import postgresql
+# from sqlalchemy.dialects import postgresql
 
 # # {
 # #     "id": 1,
@@ -32,7 +32,7 @@ class Venicle(db.Model, Base):
                    index=True, autoincrement=True)
     name = db.Column(db.String(20), unique=True, index=True, nullable=False)
     number = db.Column(db.String(10), nullable=False)
-    coord = db.Column(postgresql.ARRAY(db.Float))
+    # coord = db.Column(postgresql.ARRAY(db.Float))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -54,6 +54,6 @@ class Route(db.Model, Base):
 
     id = db.Column(db.Integer, primary_key=True,
                    index=True, autoincrement=True)
-    coord = db.Column(postgresql.ARRAY(db.Float))
+    # coord = db.Column(postgresql.ARRAY(db.Float))
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'),
                         nullable=False)
